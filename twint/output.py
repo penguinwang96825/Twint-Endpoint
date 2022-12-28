@@ -4,7 +4,7 @@ from . import format, get
 from .tweet import Tweet
 from .user import User
 from .storage import db, elasticsearch, write, panda
-
+import string
 import logging as logme
 
 follows_list = []
@@ -120,7 +120,11 @@ def _output(obj, output, config, **extra):
     else:
         if not config.Hide_output:
             try:
-                print(output.replace('\n', ' '))
+                word = ''
+                for i in output:
+                    if i in string.printable:
+                        word = word + i
+                print(word.replace('\n', ' '))
             except UnicodeEncodeError:
                 logme.critical(__name__ + ':_output:UnicodeEncodeError')
                 print("unicode error [x] output._output")
